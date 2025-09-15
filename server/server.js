@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/auth.js";
 import contactRoutes from "./routes/contacts.js";
 import { setupSwagger } from "./swagger.js";
+import { errorHandler } from "./middlewares/errorMiddleware.js";
+
 
 
 
@@ -22,6 +24,9 @@ mongoose
 app.get("/",(req,res)=>{ res.send("Reçu 5 sur 5")});
 app.use("/auth", authRoutes);
 app.use("/contacts", contactRoutes);
+
+// après toutes les routes
+app.use(errorHandler);
 
 // Swagger
 setupSwagger(app);

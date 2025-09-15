@@ -7,16 +7,22 @@ const swaggerOptions = {
     info: {
       title: "API MyContacts",
       version: "1.0.0",
-      description: "API REST pour MyContacts avec Auth",
+      description: "API REST pour MyContacts avec Auth et Contacts",
     },
-    servers: [
-      {
-        url: "http://localhost:5000",
+    servers: [{ url: "http://localhost:5000" }],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
       },
-    ],
+    },
   },
   apis: ["./routes/*.js"],
 };
+
 
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
 

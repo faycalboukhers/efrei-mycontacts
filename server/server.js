@@ -1,9 +1,13 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import authRoutes from "./routes/auth.js";
+import contactRoutes from "./routes/contacts.js";
+import { setupSwagger } from "./swagger.js";
+
+
 
 dotenv.config();
-
 const app = express();
 app.use(express.json());
 
@@ -15,9 +19,12 @@ mongoose
 
 
 // -- route
-app.get("/",(req,res)=>{
-    res.send("Reçu 5 sur 5")
-});
+app.get("/",(req,res)=>{ res.send("Reçu 5 sur 5")});
+app.use("/auth", authRoutes);
+app.use("/contacts", contactRoutes);
+
+// Swagger
+setupSwagger(app);
 
 // -- lancer le serveur
 const PORT = process.env.PORT;
@@ -25,3 +32,15 @@ app.listen(PORT, () => console.log(`Serveur sur http://localhost:${PORT}`));
 
 // Commande
 // node server.js : lancer le serveur
+
+// Test avec curl
+// curl -X POST http://localhost:5000/auth/register \
+// -H "Content-Type: application/json" \
+// -d '{"username":"JohnDoe","email":"john@example.com","password":"123456"}'
+
+// curl -X POST http://localhost:5000/auth/login \
+// -H "Content-Type: application/json" \
+// -d '{"email":"john@example.com","password":"123456"}'
+
+// curl -X GET http://localhost:5000/contacts \
+// -H "Authorization: Bearer <JWT_TOKEN>"

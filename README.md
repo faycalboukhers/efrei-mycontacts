@@ -112,7 +112,7 @@ Authorization: Bearer <votre_jwt_token>
 ### Compte de démonstration
 
 **Email** : `demo@example.com`  
-**Mot de passe** : `demo123`
+**Mot de passe** : `demo@example.com`
 
 Ou créez votre propre compte via l'inscription.
 

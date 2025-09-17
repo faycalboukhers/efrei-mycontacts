@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth.js";
 import contactRoutes from "./routes/contacts.js";
 import { setupSwagger } from "./swagger.js";
 import { errorHandler } from "./middlewares/errorMiddleware.js";
+import cors from "cors";
 
 
 
@@ -12,6 +13,9 @@ import { errorHandler } from "./middlewares/errorMiddleware.js";
 dotenv.config();
 const app = express();
 app.use(express.json());
+
+// Autoriser les requêtes depuis ton frontend React
+app.use(cors({ origin: "http://localhost:3000" })); 
 
 // -- connexion MongoDb Atlas
 mongoose

@@ -15,7 +15,14 @@ const app = express();
 app.use(express.json());
 
 // Autoriser les requêtes depuis ton frontend React
-app.use(cors({ origin: "http://localhost:3000" })); 
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://prismatic-dieffenbachia-a78b54.netlify.app'] 
+    : ['http://localhost:3000'],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 
 // -- connexion MongoDb Atlas
 mongoose

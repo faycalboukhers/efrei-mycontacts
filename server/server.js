@@ -14,7 +14,7 @@ app.use(express.json());
 // Configuration CORS
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? 'https://prismatic-dieffenbachia-a78b54.netlify.app'
+    ? ['https://prismatic-dieffenbachia-a78b54.netlify.app', 'https://mycontacts.faycalboukhers.com'] 
     : 'http://localhost:3000',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],

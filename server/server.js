@@ -11,11 +11,11 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// Configuration CORS complète
+// Configuration CORS
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://prismatic-dieffenbachia-a78b54.netlify.app'] 
-    : ['http://localhost:3000'],
+    ? 'https://prismatic-dieffenbachia-a78b54.netlify.app'
+    : 'http://localhost:3000',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -23,12 +23,9 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// Debug pour vérifier la configuration
+// Debug
 console.log('NODE_ENV:', process.env.NODE_ENV);
 console.log('CORS Origin configured for:', corsOptions.origin);
-
-// Gérer les requêtes OPTIONS (preflight)
-app.options('*', cors(corsOptions));
 
 // -- connexion MongoDb Atlas
 mongoose
@@ -36,7 +33,7 @@ mongoose
     .then(() => console.log("Cool on est Connecté à la BDD!"))
     .catch((err) => console.error("RIP pour la connexion BDD..", err));
 
-// -- route
+// -- routes
 app.get("/",(req,res)=>{ res.send("Reçu 5 sur 5")});
 app.use("/auth", authRoutes);
 app.use("/contacts", contactRoutes);

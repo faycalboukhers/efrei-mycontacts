@@ -7,29 +7,34 @@ import { setupSwagger } from "./swagger.js";
 import { errorHandler } from "./middlewares/errorMiddleware.js";
 import cors from "cors";
 
-
-
-
 dotenv.config();
 const app = express();
 app.use(express.json());
 
-// Autoriser les requêtes depuis ton frontend React
+// Configuration CORS complète
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
     ? ['https://prismatic-dieffenbachia-a78b54.netlify.app'] 
     : ['http://localhost:3000'],
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 app.use(cors(corsOptions));
+
+// Debug pour vérifier la configuration
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('CORS Origin configured for:', corsOptions.origin);
+
+// Gérer les requêtes OPTIONS (preflight)
+app.options('*', cors(corsOptions));
 
 // -- connexion MongoDb Atlas
 mongoose
     .connect(process.env.MONGO_URI)
     .then(() => console.log("Cool on est Connecté à la BDD!"))
     .catch((err) => console.error("RIP pour la connexion BDD..", err));
-
 
 // -- route
 app.get("/",(req,res)=>{ res.send("Reçu 5 sur 5")});
@@ -43,20 +48,5 @@ app.use(errorHandler);
 setupSwagger(app);
 
 // -- lancer le serveur
-const PORT = process.env.PORT;
-app.listen(PORT, () => console.log(`Serveur sur http://localhost:${PORT}`));
-
-// Commande
-// node server.js : lancer le serveur
-
-// Test avec curl
-// curl -X POST http://localhost:5000/auth/register \
-// -H "Content-Type: application/json" \
-// -d '{"username":"JohnDoe","email":"john@example.com","password":"123456"}'
-
-// curl -X POST http://localhost:5000/auth/login \
-// -H "Content-Type: application/json" \
-// -d '{"email":"john@example.com","password":"123456"}'
-
-// curl -X GET http://localhost:5000/contacts \
-// -H "Authorization: Bearer <JWT_TOKEN>"
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, '0.0.0.0', () => console.log(`Serveur sur port ${PORT}`));
